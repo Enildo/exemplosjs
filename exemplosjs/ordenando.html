@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ordenando Vetores</title>
+</head>
+<body>
+    <h1>Ordenação de Vetores</h1>
+
+    <!-- Campo de entrada numérico -->
+    <input type="number" id="valor" placeholder="Digite um número">
+
+    <!-- Botão para adicionar valor -->
+    <button onclick="add()">Adicionar</button>
+
+    <!-- Campo de seleção de algoritmo de ordenação -->
+    <select id="algoritmo">
+        <option value="bubble_sort" selected>Bubble Sort</option>
+        <option value="selection_sort">Selection Sort</option>
+        <option value="quick_sort">Quick Sort</option>
+    </select>
+
+    <!-- Botão para ordenar os valores -->
+    <button onclick="ordenar()">Ordenar</button>
+
+    <!-- Botão para misturar os valores -->
+    <button onclick="misturar()">Misturar</button>
+
+    <!-- Lista de valores -->
+    <ul id="valores"></ul>
+
+    <!-- Inclusão do arquivo ordenando.js -->
+    <script src="ordenando.js"></script>
+
+    <!-- Funções JavaScript -->
+    <script>
+        // Função para adicionar valor à lista
+        function add() {
+            const inputValor = document.getElementById('valor');  // Captura o campo de entrada
+            const listaValores = document.getElementById('valores');  // Captura a lista de valores
+
+            // Cria um novo item na lista
+            const node = document.createElement('li');  
+            const textNode = document.createTextNode(inputValor.value);  // Cria um nó de texto com o valor
+            node.appendChild(textNode);  // Adiciona o nó de texto ao item da lista
+
+            listaValores.appendChild(node);  // Adiciona o item à lista
+            inputValor.value = '';  // Limpa o campo de entrada
+        }
+
+        // Função para ordenar os valores da lista
+        function ordenar() {
+            const listaValores = document.getElementById('valores');  // Captura a lista de valores
+            const algoritmo = document.getElementById('algoritmo');  // Captura a lista de seleção
+            const vetor = Array.from(listaValores.children)  // Obtém os itens da lista como array
+                .map(item => eval(item.innerHTML));  // Converte os valores para inteiros
+
+            // Escolhe o algoritmo de ordenação baseado no selectedIndex
+            switch (algoritmo.selectedIndex) {
+                case 0:
+                    bubble_sort(vetor);
+                    break;
+                case 1:
+                    selection_sort(vetor);
+                    break;
+                case 2:
+                    quick_sort(vetor);
+                    break;
+            }
+
+            // Atualiza a lista de valores com o vetor ordenado
+            listaValores.innerHTML = vetor.map(val => `<li>${val}</li>`).reduce((acc, curr) => acc + curr, '');
+        }
+
+        // Função para misturar os valores da lista
+        function misturar() {
+            const listaValores = document.getElementById('valores');  // Captura a lista de valores
+            const vetor = Array.from(listaValores.children)  // Obtém os itens da lista como array
+                .map(item => eval(item.innerHTML));  // Converte os valores para inteiros
+
+            // Aplica a função shuffle ao vetor
+            shuffle(vetor, vetor.length);
+
+            // Atualiza a lista de valores com o vetor embaralhado
+            listaValores.innerHTML = vetor.map(val => `<li>${val}</li>`).reduce((acc, curr) => acc + curr, '');
+        }
+    </script>
+</body>
+</html>
