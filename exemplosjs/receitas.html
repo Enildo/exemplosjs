@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Catálogo de Receitas</title>
+    <!-- Incluindo a folha de estilos do Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-warning" onload="preencheCatalogo()">
+    <!-- Área principal container-fluid -->
+    <div class="container-fluid">
+        <h1 class="text-center">Catálogo de Receitas</h1>
+
+        <!-- Div para apresentação dos painéis flex-wrap -->
+        <div id="pnlCatalogo" class="d-flex flex-wrap justify-content-center"></div>
+    </div>
+
+    <!-- Trecho JavaScript -->
+    <script>
+        // Vetor de receitas (JSON) com os campos título, imagem, preparo e ingredientes
+        const receitas = [
+            {
+                titulo: "Bolo de Cenoura",
+                imagem: "imagens/cenoura.png",
+                preparo: "Misture todos os ingredientes no liquidificador e asse por 40 minutos.",
+                ingredientes: ["3 cenouras", "3 ovos", "1 xícara de óleo", "2 xícaras de açúcar", "2 xícaras de farinha de trigo", "1 colher de fermento"]
+            },
+            {
+                titulo: "Lasanha de Carne",
+                imagem: "imagens/carne.png",
+                preparo: "Monte camadas de molho, massa, carne e queijo. Asse por 45 minutos.",
+                ingredientes: ["500g de carne moída", "1 pacote de massa de lasanha", "200g de queijo mussarela", "500ml de molho de tomate"]
+            },
+            {
+                titulo: "Sopa de Legumes",
+                imagem: "imagens/sopa.png",
+                preparo: "Cozinhe todos os ingredientes na panela de pressão por 20 minutos.",
+                ingredientes: ["2 batatas", "2 cenouras", "1 abobrinha", "1 cebola", "1 chumaço de salsinha", "2 dentes de alho", "Sal e pimenta a gosto"]
+            }
+        ];
+
+        // Função para gerar lista de ingredientes em HTML
+        function getListaIngredientes(receita) {
+            // Inicia a lista em uma variável texto com a tag ul
+            let listaHTML = '<ul>';
+            // Utiliza map e reduce para gerar os itens de lista
+            listaHTML += receita.ingredientes
+                .map(ingrediente => `<li>${ingrediente}</li>`)
+                .reduce((acc, item) => acc + item, '');
+            // Finaliza a lista
+            listaHTML += '</ul>';
+            return listaHTML;
+        }
+
+        // Função para gerar o card (painel) da receita
+        function getCard(receita) {
+            // Retorna o card formatado em HTML
+            return `
+                <div class="card m-2" style="width: 250px;">
+                    <img src="${receita.imagem}" class="card-img-top" alt="Imagem de ${receita.titulo}">
+                    <div class="card-body">
+                        <h5 class="card-title">${receita.titulo}</h5>
+                        <div class="card-text">
+                            ${getListaIngredientes(receita)}
+                            <hr>
+                            ${receita.preparo}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Função para preencher o catálogo com as receitas
+        function preencheCatalogo() {
+            // Captura o elemento pnlCatalogo
+            const catalogo = document.getElementById('pnlCatalogo');
+            // Gera o HTML para os cards de receita
+            const htmlReceitas = receitas
+                .map(receita => getCard(receita))
+                .reduce((acc, card) => acc + card, '');
+            // Altera o innerHTML de pnlCatalogo para exibir os cards
+            catalogo.innerHTML = htmlReceitas;
+        }
+    </script>
+
+    <!-- Inclusão do JavaScript do Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
